@@ -1,4 +1,3 @@
-// src/routes/healthRoutes.js
 import express from 'express';
 import { checkHealth } from '../controllers/healthController.js';
 

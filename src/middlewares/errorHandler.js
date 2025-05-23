@@ -1,4 +1,3 @@
-// src/middlewares/errorHandler.js
 export default function errorHandler(err, req, res, next) { // Can be default export
     console.error("-------------------- ERROR --------------------");
     console.error("Timestamp:", new Date().toISOString());

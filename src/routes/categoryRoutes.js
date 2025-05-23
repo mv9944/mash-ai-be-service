@@ -1,4 +1,3 @@
-// src/routes/categoryRoutes.js
 import express from 'express';
 import { body } from 'express-validator'; // Import 'body' for validating request body
 import { getMashCategories, getMashCategoryOptions } from '../controllers/categoryController.js';

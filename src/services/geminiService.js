@@ -1,4 +1,3 @@
-// src/services/geminiService.js
 import genAI from '../config/geminiConfig.js';
 import { z } from 'zod';
 

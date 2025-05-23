@@ -1,4 +1,3 @@
-// src/routes/index.js
 import express from 'express';
 import categoryRoutes from './categoryRoutes.js';
 import healthRoutes from './healthRoutes.js';

@@ -1,4 +1,3 @@
-// src/controllers/categoryController.js
 import {
     generateMashCategories as generateMashCategoriesService,
     generateMashCategoryOptions as generateMashCategoryOptionsService

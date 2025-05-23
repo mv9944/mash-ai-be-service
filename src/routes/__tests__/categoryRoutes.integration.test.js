@@ -1,9 +1,8 @@
-// src/routes/__tests__/categoryRoutes.integration.test.js
-import { describe, it, expect, beforeAll, jest } from '@jest/globals'; // Removed jest and beforeEach if not strictly needed for this live test style
+import { describe, it, expect, beforeAll, jest } from '@jest/globals'; 
 import request from 'supertest';
 import app from '../../app.js';
 import { z } from 'zod';
-import 'dotenv/config'; // Ensure .env is loaded for GEMINI_API_KEY
+import 'dotenv/config';
 
 // --- Zod Schemas for API Response Validation ---
 const ApiCategoriesResponseSchema = z.object({
@@ -19,7 +18,6 @@ const ApiHealthResponseSchema = z.object({
     message: z.string()
 }).strict();
 
-// --- Conditionally skip tests if API key is not present ---
 const API_KEY_PRESENT = !!process.env.GEMINI_API_KEY;
 const describeOrSkip = API_KEY_PRESENT ? describe : describe.skip;
 const itOrSkip = API_KEY_PRESENT ? it : it.skip;
@@ -72,11 +70,6 @@ describeOrSkip('Category Routes API (Live Gemini Integration)', () => {
             );
         });
 
-
-        // Testing a 500 error from the *live* Gemini service is hard to trigger reliably.
-        // You could try a deliberately problematic prompt, but the API might just block it.
-        // This type of error is better tested by mocking the service layer.
-        // For a live test, we mostly focus on the "happy path" or input validation.
     });
 
     describe('POST /api/categories/options', () => {
