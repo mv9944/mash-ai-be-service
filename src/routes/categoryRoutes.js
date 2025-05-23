@@ -1,6 +1,8 @@
 // src/routes/categoryRoutes.js
 import express from 'express';
+import { body } from 'express-validator'; // Import 'body' for validating request body
 import { getMashCategories, getMashCategoryOptions } from '../controllers/categoryController.js';
+import { handleValidationErrors } from '../middlewares/validationHandler.js'; // Import our handler
 
 const router = express.Router();
 
@@ -32,11 +34,11 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/CategoriesResponse'
  *       400:
- *         description: Bad Request - Invalid input, such as a missing or empty theme.
+ *         description: Bad Request - Invalid input, such as a missing or empty theme, or theme too long.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorResponse' # Or a more specific validation error schema
  *       500:
  *         description: Internal Server Error - An issue occurred while trying to generate categories (e.g., AI service error).
  *         content:
@@ -44,7 +46,18 @@ const router = express.Router();
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/', getMashCategories);
+router.post(
+    '/',
+    // --- Validation Rules for this endpoint ---
+    body('theme')
+        .trim() // Remove leading/trailing whitespace
+        .notEmpty().withMessage('Theme is required and cannot be empty.')
+        .isString().withMessage('Theme must be a string.')
+        .isLength({ min: 2, max: 100 }).withMessage('Theme must be between 2 and 100 characters long.'),
+    // --- End of Validation Rules ---
+    handleValidationErrors, // Our middleware to handle any validation errors found
+    getMashCategories       // If validation passes, proceed to the controller
+);
 
 /**
  * @swagger
@@ -86,11 +99,11 @@ router.post('/', getMashCategories);
  *                   description: An array of AI-generated option strings for the category.
  *                   example: ["Sparklehoof the Unicorn", "Whisperwind the Griffin", "Glimmerfang the Baby Dragon"]
  *       400:
- *         description: Bad Request - Invalid input, such as a missing categoryTitle or theme.
+ *         description: Bad Request - Invalid input, such as a missing categoryTitle or theme, or values too long.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorResponse' # Or a more specific validation error schema
  *       500:
  *         description: Internal Server Error - An issue occurred while trying to generate options (e.g., AI service error).
  *         content:
@@ -98,6 +111,22 @@ router.post('/', getMashCategories);
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/options', getMashCategoryOptions);
+router.post(
+    '/options',
+    // --- Validation Rules for this endpoint ---
+    body('categoryTitle')
+        .trim()
+        .notEmpty().withMessage('categoryTitle is required and cannot be empty.')
+        .isString().withMessage('categoryTitle must be a string.')
+        .isLength({ min: 2, max: 150 }).withMessage('categoryTitle must be between 2 and 150 characters long.'),
+    body('theme')
+        .trim()
+        .notEmpty().withMessage('Theme is required and cannot be empty.')
+        .isString().withMessage('Theme must be a string.')
+        .isLength({ min: 2, max: 100 }).withMessage('Theme must be between 2 and 100 characters long.'),
+    // --- End of Validation Rules ---
+    handleValidationErrors, // Handle validation errors
+    getMashCategoryOptions  // Proceed to controller if valid
+);
 
 export default router;
