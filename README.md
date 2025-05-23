@@ -196,8 +196,7 @@ This interface allows you to explore all available endpoints, view their request
 
 ## Future Considerations / Potential Enhancements
 
-*   More sophisticated input validation (e.g., using `express-validator`).
 *   Caching responses from the AI for common themes/categories to reduce API calls and latency (with appropriate cache invalidation).
 *   Adding authentication/authorization if the API needs to be secured.
 *   Implementing more detailed metrics collection (e.g., using Prometheus).
-*   Adding unit and integration tests.
+
